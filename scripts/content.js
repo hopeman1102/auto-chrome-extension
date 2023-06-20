@@ -2,10 +2,10 @@ const selectOptionFromName = (select, name) => {
     const options = select.getElementsByTagName('option');
     for(let i = 0; i < options.length; i ++) {
         if(name === options[i].innerHTML) {
-            return select.value = i > 0 ? i - 1 : 0;
+            return i - 1;
         }
     }
-    return 0;
+    return -1;
 }
 
 const loadSearchResult = async () => {
@@ -64,26 +64,42 @@ const loadSearchResult = async () => {
                 chrome.storage.local.set({searchCompanies: null});
                 if(selectedCompany && savedCompanies && savedCompanies.length > 0) {
                     const company = savedCompanies.find((c) => c.name === selectedCompany);
-                    let date = new Date();
-                    let year = date.getFullYear();
-                    let month = ("0" + (date.getMonth() + 1)).slice(-2);
-                    let day = ("0" + date.getDate()).slice(-2);
-                    let now = `${year}-${month}-${day}`;
-            
-                    const select = document.getElementById('frm_suche:lsom_bundesland:lsom');
-                    select.value = selectOptionFromName(select, company.bundesland);
-                    select.addEventListener('change', async () => {
-                        while(document.getElementById('frm_suche:lsom_gericht:lsom').getAttribute('disabled')) {
-                            await new Promise(resolve => setTimeout(resolve, 100));
+                    if(company) {
+                        let date = new Date();
+                        let year = date.getFullYear();
+                        let month = ("0" + (date.getMonth() + 1)).slice(-2);
+                        let day = ("0" + date.getDate()).slice(-2);
+                        let now = `${year}-${month}-${day}`;
+                
+                        const select = document.getElementById('frm_suche:lsom_bundesland:lsom');
+                        const v = selectOptionFromName(select, company.bundesland);
+                        if(v >= 0) {
+                            select.value = v;
+                            select.addEventListener('change', async () => {
+                                while(document.getElementById('frm_suche:lsom_gericht:lsom').getAttribute('disabled')) {
+                                    await new Promise(resolve => setTimeout(resolve, 100));
+                                }
+                                const select1 = document.getElementById('frm_suche:lsom_gericht:lsom');
+                                const val = selectOptionFromName(select1, company.gericht);
+                                if(val >= 0) {
+                                    select1.value = val;
+                                }
+                                document.getElementById('frm_suche:ldi_datumVon:datumHtml5').value = '2000-01-01';
+                                document.getElementById('frm_suche:ldi_datumBis:datumHtml5').value = now;
+                                document.getElementById('frm_suche:litx_firmaNachName:text').value = company.name.split(',')[0];
+                                document.getElementById('frm_suche:cbt_suchen').click();
+                            });
+                            select.dispatchEvent(new Event('change'));
+                        } else {
+                            document.getElementById('frm_suche:ldi_datumVon:datumHtml5').value = '2000-01-01';
+                            document.getElementById('frm_suche:ldi_datumBis:datumHtml5').value = now;
+                            document.getElementById('frm_suche:litx_firmaNachName:text').value = company.name.split(',')[0];
+                            document.getElementById('frm_suche:cbt_suchen').click();
                         }
-                        const select1 = document.getElementById('frm_suche:lsom_gericht:lsom');
-                        select1.value = selectOptionFromName(select1, company.gericht);
-                        document.getElementById('frm_suche:ldi_datumVon:datumHtml5').value = '2000-01-01';
-                        document.getElementById('frm_suche:ldi_datumBis:datumHtml5').value = now;
-                        document.getElementById('frm_suche:litx_firmaNachName:text').value = company.name;
-                        document.getElementById('frm_suche:cbt_suchen').click();
-                    });
-                    select.dispatchEvent(new Event('change'));
+
+                    } else {
+                        chrome.storage.local.set({selectedCompany: null});
+                    }
                 } else {
                     chrome.runtime.sendMessage({search: true});
                 }

@@ -92,7 +92,7 @@ async function updateUI() {
     }
 
     // show notices
-    if(notices && notices.length > 0) {
+    if(searchCompanies && searchCompanies.length > 0 && notices && notices.length > 0) {
         const template = document.getElementById("notice-tbody-template");
         const elements = new Set();
         for (let i = 0; i < notices.length; i ++) {
@@ -100,14 +100,14 @@ async function updateUI() {
             const element = template.content.firstElementChild.cloneNode(true);
             element.querySelector('.no').textContent = (i + 1);
             element.querySelector(".date").textContent = notice.date;
-            const button = element.querySelector('#pop-button');
-            button.addEventListener('click', function() {
+            // const button = element.querySelector('#pop-button');
+            // button.addEventListener('click', function() {
 
-            });
-            const downButton = element.querySelector('#down-button');
-            downButton.addEventListener('click', function() {
+            // });
+            // const downButton = element.querySelector('#down-button');
+            // downButton.addEventListener('click', function() {
 
-            })
+            // })
             elements.add(element);
         }
         deleteChildrenAndAppend(document.getElementById("notice-content"), elements);
