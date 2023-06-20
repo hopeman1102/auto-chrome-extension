@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Saved companies</title>
+    <style>
+      table, th, td {
+        border: 1px solid;
+        font-size: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <template id="save-tbody-template">
+        <tr>
+            <td class="no"></td>
+            <td class="name"></td>
+            <td class="notice"></td>
+            <td class="show"><button id="show-button">show</button></td>
+            <td class="delete"><button id="delete-button">delete</button></td>
+        </tr>
+    </template>
+    <template id="search-tbody-template">
+        <tr>
+            <td class="no"></td>
+            <td class="name"></td>
+            <td class="court"></td>
+            <td class="save"><input type="checkbox" id="save-checkbox"></td>
+        </tr>
+    </template>
+    <template id="notice-tbody-template">
+        <tr>
+            <td class="no"></td>
+            <td class="date"></td>
+            <td class="show"><button id="pop-button">show</button>
+            <td class="download"><button id="down-button">download</button></td>
+        </tr>
+    </template>
+    <h1>Saved companies</h1>
+    <div id="save-container">
+        <table style="border: 1cap;">
+            <thead>
+              <tr>
+                <td>No</td>
+                <td>Company</td>
+                <td>Notices</td>
+                <td>Show</td>
+                <td>Delete</td>
+              </tr>
+            </thead>
+            <tbody id="save-content">
+            </tbody>
+        </table>
+    </div>
+    <div id="search-container">
+        <h1>Searched companies</h1>
+        <table style="border: 1cap;">
+            <thead>
+              <tr>
+                <td>No</td>
+                <td>Company</td>
+                <td>Court</td>
+                <td>Save</td>
+              </tr>
+            </thead>
+            <tbody id="search-content">
+            </tbody>
+        </table>
+    </div>
+    <div id="notice-container">
+        <h1>Notices</h1>
+        <table style="border: 1cap;">
+            <thead>
+              <tr>
+                <td>No</td>
+                <td>Date</td>
+                <td>Show</td>
+                <td>Download</td>
+              </tr>
+            </thead>
+            <tbody id="notice-content">
+            </tbody>
+        </table>
+    </div>
+  </body>
+  <script src="./sidepanel.js" type="module"></script>
+</html>
