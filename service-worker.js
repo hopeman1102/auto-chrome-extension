@@ -12,34 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
-// fetch('https://neu.insolvenzbekanntmachungen.de/ap/suche.jsf', {
-//   method: 'POST',
-//   body: JSON.stringify({
-//     'frm_suche': 'frm_suche',
-//     'frm_suche:lsom_bundesland:lsom': 9,
-//     'frm_suche:lsom_gericht:lsom': 1,
-//     'frm_suche:ldi_datumVon:datumHtml5': '2000-01-01',
-//     'frm_suche:ldi_datumBis:datumHtml5': '2023-06-17',
-//     'frm_suche:lsom_wildcard:lsom': 0,
-//     'frm_suche:litx_firmaNachName:text': 'Grundstueck*',
-//     'frm_suche:iaz_aktenzeichen:som_registerzeichen': '--',
-//     'frm_suche:lsom_gegenstand:lsom': '-- Alle Gegenstände innerhalb des Verfahrens --',
-//     'frm_suche:ireg_registereintrag:som_registergericht': '--',
-//     'frm_suche:ireg_registereintrag:ihd_validator': true,
-//     'frm_suche:cbt_suchen': 'Suchen',
-//     'javax.faces.ViewState': '-4148127807254041564:7324281115120945752'
-//   })
-//   // responseType: 'cors',
-//   // credentials: 'include',
-// }).then(res => {
-//   //console.log(res.headers.get('set-cookie')); // undefined
-//   //console.log(document.cookie); // nope
-//   return res.text();
-// }).then(json => {
-//   // console.log(json);
-// });
-
 const GOOGLE_ORIGIN = 'https://neu.insolvenzbekanntmachungen.de';
 
 // Allows users to open the side panel by clicking on the action toolbar icon

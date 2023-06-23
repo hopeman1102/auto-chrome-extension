@@ -6,7 +6,6 @@
   "background": {
     "service_worker": "service-worker.js"
   },
-
   "content_scripts": [
     {
         "matches": ["https://neu.insolvenzbekanntmachungen.de/*"],

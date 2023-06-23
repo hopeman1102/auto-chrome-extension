@@ -100,10 +100,12 @@ async function updateUI() {
             const element = template.content.firstElementChild.cloneNode(true);
             element.querySelector('.no').textContent = (i + 1);
             element.querySelector(".date").textContent = notice.date;
-            // const button = element.querySelector('#pop-button');
-            // button.addEventListener('click', function() {
-
-            // });
+            const button = element.querySelector('#pop-button');
+            button.addEventListener('click', function() {
+                chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                    chrome.tabs.sendMessage(tabs[0].id, {notice: notice.id});
+                });
+            });
             // const downButton = element.querySelector('#down-button');
             // downButton.addEventListener('click', function() {
 
@@ -111,7 +113,8 @@ async function updateUI() {
             elements.add(element);
         }
         deleteChildrenAndAppend(document.getElementById("notice-content"), elements);
-        noticeContainer.style = "display";
+        noticeContainer.style = "display"
+
     } else {
         noticeContainer.style = "display:none";
     }

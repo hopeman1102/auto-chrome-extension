@@ -8,6 +8,10 @@ const selectOptionFromName = (select, name) => {
     return -1;
 }
 
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+    document.getElementById(message.notice).dispatchEvent(new Event('click'));
+});
+
 const loadSearchResult = async () => {
     const breadcrumb = document.getElementById("breadcrumb");
     const { savedCompanies } = await chrome.storage.local.get('savedCompanies');
@@ -27,13 +31,14 @@ const loadSearchResult = async () => {
                     const companies = {}
                     const searchCompanies = [];
                     for (let r = 0, n = table.rows.length; r < n; r++) {
+                        const noticeId = table.rows[r].cells[6].getElementsByTagName('input')[1].getAttribute('id');
                         const court = getSpanText(table, r, 1).replace(/&amp;/g, '&').replace(/&quot;/g, '"');
-                        const name = getSpanText(table, r, 3).replace(/&amp;/g, '&').replace(/&quot;/g, '"');
+                        const name = getSpanText(table, r, 3).replace(/&amp;/g, '&').replace(/&quot;/g, '"').split(',')[0];
                         if(name in companies) {
-                            companies[name].push({date: getSpanText(table, r, 0)});
+                            companies[name].push({date: getSpanText(table, r, 0), id: noticeId});
                         } else {
                             searchCompanies.push({bundesland, gericht, date, name, court})
-                            companies[name] = [{date: getSpanText(table, r, 0)}];
+                            companies[name] = [{date: getSpanText(table, r, 0), id: noticeId}];
                         }
                     }
                     const searchResults = searchCompanies.map((c) => ({
