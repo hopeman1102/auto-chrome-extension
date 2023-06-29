@@ -14,6 +14,30 @@ function deleteChildrenAndAppend(parent, elements) {
     parent.append(...elements);
 }
 
+function updateNotices(notices, id) {
+    const template = document.getElementById("notice-tbody-template");
+    const elements = new Set();
+    for (let i = 0; i < notices.length; i ++) {
+        const notice = notices[i];
+        const element = template.content.firstElementChild.cloneNode(true);
+        if(id && notice.id === id) {
+            element.classList.add("table-light");
+            // element.querySelector('#pop-button').classList.add('btn btn-info');
+        }
+        element.querySelector('.no').textContent = (i + 1);
+        element.querySelector(".date").textContent = notice.date;
+        const button = element.querySelector('#pop-button');
+        button.addEventListener('click', function() {
+            chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                chrome.tabs.sendMessage(tabs[0].id, {notice: notice.id});
+            });
+            updateNotices(notices, notice.id);
+        });
+        elements.add(element);
+    }
+    deleteChildrenAndAppend(document.getElementById("notice-content"), elements);
+}
+
 async function updateUI() {
     const saveContainer = document.getElementById('save-container');
     const searchContainer = document.getElementById('search-container');
@@ -31,7 +55,7 @@ async function updateUI() {
             const company = savedCompanies[i];
             const element = template.content.firstElementChild.cloneNode(true);
             if(selectedCompany === company.name) {
-                element.querySelector('.name').style.backgroundColor = "green";
+                element.classList.add("table-light");
                 notices = company.notices;
                 chrome.storage.local.set({selectedCompany: null});
             }
@@ -93,26 +117,27 @@ async function updateUI() {
 
     // show notices
     if(searchCompanies && searchCompanies.length > 0 && notices && notices.length > 0) {
-        const template = document.getElementById("notice-tbody-template");
-        const elements = new Set();
-        for (let i = 0; i < notices.length; i ++) {
-            const notice = notices[i];
-            const element = template.content.firstElementChild.cloneNode(true);
-            element.querySelector('.no').textContent = (i + 1);
-            element.querySelector(".date").textContent = notice.date;
-            const button = element.querySelector('#pop-button');
-            button.addEventListener('click', function() {
-                chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-                    chrome.tabs.sendMessage(tabs[0].id, {notice: notice.id});
-                });
-            });
-            // const downButton = element.querySelector('#down-button');
-            // downButton.addEventListener('click', function() {
+        // const template = document.getElementById("notice-tbody-template");
+        // const elements = new Set();
+        // for (let i = 0; i < notices.length; i ++) {
+        //     const notice = notices[i];
+        //     const element = template.content.firstElementChild.cloneNode(true);
+        //     element.querySelector('.no').textContent = (i + 1);
+        //     element.querySelector(".date").textContent = notice.date;
+        //     const button = element.querySelector('#pop-button');
+        //     button.addEventListener('click', function() {
+        //         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        //             chrome.tabs.sendMessage(tabs[0].id, {notice: notice.id});
+        //         });
+        //     });
+        //     // const downButton = element.querySelector('#down-button');
+        //     // downButton.addEventListener('click', function() {
 
-            // })
-            elements.add(element);
-        }
-        deleteChildrenAndAppend(document.getElementById("notice-content"), elements);
+        //     // })
+        //     elements.add(element);
+        // }
+        // deleteChildrenAndAppend(document.getElementById("notice-content"), elements);
+        updateNotices(notices);
         noticeContainer.style = "display"
 
     } else {
