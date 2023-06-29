@@ -21,7 +21,7 @@ function updateNotices(notices, id) {
         const notice = notices[i];
         const element = template.content.firstElementChild.cloneNode(true);
         if(id && notice.id === id) {
-            element.classList.add("table-light");
+            element.classList.add("table-primary");
             // element.querySelector('#pop-button').classList.add('btn btn-info');
         }
         element.querySelector('.no').textContent = (i + 1);
@@ -55,7 +55,7 @@ async function updateUI() {
             const company = savedCompanies[i];
             const element = template.content.firstElementChild.cloneNode(true);
             if(selectedCompany === company.name) {
-                element.classList.add("table-light");
+                element.classList.add("table-primary");
                 notices = company.notices;
                 chrome.storage.local.set({selectedCompany: null});
             }
