@@ -8,8 +8,16 @@ const selectOptionFromName = (select, name) => {
     return -1;
 }
 
+
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     document.getElementById(message.notice).dispatchEvent(new Event('click'));
+    // Check if there is an opened popup window
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    
+    popupWindow = window.open("about:blank", "MsgWindow", "location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,top=0,left=0");
+    popupWindow.resizeTo(width * 0.8, height * 0.8);
+    popupWindow.moveTo(width * 0.1, height * 0.1);
 });
 
 const loadSearchResult = async () => {
