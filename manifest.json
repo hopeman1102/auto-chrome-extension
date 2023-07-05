@@ -16,7 +16,7 @@
     "default_title": "Click to open panel"
   },
   "host_permissions":["https://neu.insolvenzbekanntmachungen.de/*"],
-  "permissions": ["sidePanel", "tabs", "storage", "cookies"],
+  "permissions": ["sidePanel", "tabs", "storage"],
   "commands": {
     "_execute_action": {
       "suggested_key": {
